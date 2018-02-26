@@ -16,40 +16,63 @@ export default class AdPet extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            name:'',
-            username:'',
-            address:'',
-            email:'',
-            ic:'',
-            hp:'',
-            Password:'',
+            petName:'',
+            petSpecies:'',
+            breedName:'',
+            petDob:'',
+            petInfo:'',
             image: null, 
         }
     }
-
+    //open alert
     openAlert(msg){
         alert(msg);
     }
 
+    SignUpBtn(msg){
+        if(this.state.petName=='' || this.state.petName==undefined || this.state.petName==null||
+            this.state.petSpecies=='' || this.state.petSpecies==undefined || this.state.petSpecies==null||
+            this.state.breedName=='' || this.state.breedName==undefined || this.state.breedName==null||
+            this.state.petDob == '' || this.state.petDob==undefined || this.state.petDob==null){
+                if(this.state.petName=='' || this.state.petName==undefined || this.state.petName==null){
+                    this.openAlert('Pet name can not be blank');
+                }else if(this.state.petSpecies=='' || this.state.petSpecies==undefined || this.state.petSpecies==null){
+                    this.openAlert('Pet species can not be blank');
+                }else if(this.state.breedName=='' || this.state.breedName==undefined || this.state.breedName==null){
+                    this.openAlert('Breed name can not be blank');
+                }else if(this.state.petDob == '' || this.state.petDob==undefined || this.state.petDob==null){
+                    this.openAlert('Pet D.O.B can not be blank');
+                }
+            }else{
+                firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/').push({
+                    name:this.state.petName,
+                    species:this.state.petSpecies,
+                    breedName:this.state.breedName,
+                    dob:this.state.petDob
+                }).then((snap)=>{
+                    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/' + snap.key + '/').update({
+                        petId:snap.key
+                    }).then(()=>{
+                        this.setState({
+                            petName:'',
+                            petSpecies:'',
+                            breedName:'',
+                            petDob:'',
+                            petInfo:''
+                        },()=>{Actions.pop();})
+                        //this.openAlert("pet resigtration successfull");
+                    })
+                }).catch((error)=>this.openAlert(error));
+            }
+    }
+
     _pickImage = async () => {
-        // Alert.alert(
-        //     'Alert Title',
-        //     'My Alert Msg',
-        //     [
-        //       {text: 'Camera', onPress: () => {this.openCamera()}},
-        //       {text: 'Library', onPress: () => {this.openImageLibrary()}},
-        //       {text: 'Cancel', onPress: () => console.log('OK Pressed'), style: 'cancel'},
-        //     ],
-        //     { cancelable: false }
-        //   )
         //let result = await ImagePicker.launchImageLibraryAsync({
         let result = await ImagePicker.launchCameraAsync({
           allowsEditing: true,
           aspect: [4, 3],
         });
-    
-        console.log(result);
-    
+        // console.log(result.uri);
         if (!result.cancelled) {
           this.setState({ image: result.uri });
         }
@@ -84,11 +107,11 @@ export default class AdPet extends React.Component {
         
         <View>
             <View style={{top:30}}>
-        <CustomHeader  Headershow={true} headerName="Registration" showDataWelcome={false} showLogoutButton={false} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
+            <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
         </View>
         <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>
         
-                <View style={{marginTop:10}}>
+                {/* <View style={{marginTop:10}}>
                 <TouchableOpacity onPress={()=>{this._pickImage()}}>
                     <CustomImage
                         imageViewStyle={{alignSelf:'center'}}
@@ -96,33 +119,34 @@ export default class AdPet extends React.Component {
                         imageURL={{uri:this.state.image ? this.state.image : 'http://www.imag.co.uk/images/gravel/raisby-golden-gravel-lg-1.jpg'}}
                     />
                     </TouchableOpacity>
-                </View>
+                </View> */}
 
-                    <View style={{marginTop:30}}>
+                    {/* <View style={{marginTop:30}}> */}
+                    <View style={{marginTop:80}}>
                         <CustomInputText
                             placeholder=" Pet Name"
-                            value={this.state.name}
-                            onChangeText={text=>this.setState({name:text})}
+                            value={this.state.petName}
+                            onChangeText={text=>this.setState({petName:text})}
                         />
                         <CustomInputText
                             placeholder=" Pet Species"
-                            value={this.state.username}
-                            onChangeText={text=>this.setState({username:text})}
+                            value={this.state.petSpecies}
+                            onChangeText={text=>this.setState({petSpecies:text})}
                         />
                         <CustomInputText
                             placeholder=" Breed Name"
-                            value={this.state.address}
-                            onChangeText={text=>this.setState({address:text})}
+                            value={this.state.breedName}
+                            onChangeText={text=>this.setState({breedName:text})}
                         />
                         <CustomInputText
                             placeholder=" Pet's D.O.B"
-                            value={this.state.email}
-                            onChangeText={text=>this.setState({email:text})}
+                            value={this.state.petDob}
+                            onChangeText={text=>this.setState({petDob:text})}
                         />
                         <CustomInputText
                             placeholder=" Additional Information"
-                            value={this.state.ic}
-                            onChangeText={text=>this.setState({ic:text})}
+                            value={this.state.petInfo}
+                            onChangeText={text=>this.setState({petInfo:text})}
                         />
 
                         <View style={{marginTop:20, alignItems:'center',height:60}}>

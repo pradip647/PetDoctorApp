@@ -41,11 +41,11 @@ export default class MainPage extends React.Component {
     return (
         <View style={styles.mainView}>
             <View style={{top:30}}>
-            <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
+            <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {false} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.jump('Home')})}} onPressBack={()=>{Actions.pop()}}/>
             </View>
             <View style={{top:30,}}>
                 <View>
-                    <TouchableOpacity onPress={()=>{alert("hello")}}  style={{margin:3}}> 
+                    <TouchableOpacity onPress={()=>{/*alert("hello")*/ Actions.Pets()}}  style={{margin:3}}> 
                 <CustomImage
                         imageViewStyle={{alignSelf:'center'}}
                         imageTagStyle={{height:((height-110)/3), width:(width-5)}}
@@ -60,7 +60,7 @@ export default class MainPage extends React.Component {
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity onPress={()=>{alert("hello")}} style={{margin:3}}> 
+                    <TouchableOpacity onPress={()=>{Actions.Appointment()}} style={{margin:3}}> 
                 <CustomImage
                         imageViewStyle={{alignSelf:'center'}}
                         imageTagStyle={{height:((height-110)/3), width:(width-5)}}
@@ -70,7 +70,7 @@ export default class MainPage extends React.Component {
                      <View style={{
                         position:'absolute', alignSelf:'center', top:((height-110)/6)
                     }}>
-                    <Text style={{fontSize:22}}>My Pets</Text>
+                    <Text style={{fontSize:22}}>Book Appointment</Text>
                     </View>
                     </TouchableOpacity>
                     
@@ -84,7 +84,7 @@ export default class MainPage extends React.Component {
                      <View style={{
                         position:'absolute', alignSelf:'center', top:((height-110)/6)
                     }}>
-                    <Text style={{fontSize:22}}>My Pets</Text>
+                    <Text style={{fontSize:22}}>Reminder / Notification</Text>
                     </View>
                     </TouchableOpacity>
                    

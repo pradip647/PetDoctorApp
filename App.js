@@ -1,18 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View,ActivityIndicator } from 'react-native';
 import {CustomHeader} from './src/components/common';
 import Home from './src/components/pages/Home';
 import Login from './src/components/pages/Login';
 import Register from './src/components/pages/Register';
 import MainPage from './src/components/pages/Dashboard';
 import Pets from './src/components/pages/Pets';
-import AdPet from './src/components/pages/Adpet'
+import AdPet from './src/components/pages/Adpet';
+import PetDetails from './src/components/pages/PetDetails';
+import Appointment from './src/components/pages/Appointment';
 
-import {Router, Route, Schema, Animations, TabBar,Stack,Scene, Actions} from 'react-native-router-flux'
+import {Router, Route, Schema, Animations, TabBar,Stack,Scene, Actions,Lightbox} from 'react-native-router-flux'
 import * as firebase from 'firebase';
 
 
 export default class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state={
+      loggedin:false,
+      openLoading:true
+    }
+  }
   componentWillMount(){
     var config = {
       apiKey: "AIzaSyAVmrAnSfnYJb2nAlhlxQo6rKm7oEUL7s4",
@@ -23,38 +32,105 @@ export default class App extends React.Component {
       messagingSenderId: "955540918554"
     };
     firebase.initializeApp(config);
-
+    //console.disableYellowBox = true;
+    firebase.auth().onAuthStateChanged((user)=>{
+      if(user){
+        console.log("user found");
+        this.setState({
+          loggedin:true,
+          openLoading:false
+        });
+      }else{
+        console.log("user not found");
+        this.setState({
+          loggedin:false,
+          openLoading:false
+        });
+      }
+    })
 
   }
 
   render() {
-    return (
-//       <View style={styles.container}>
-// <CustomHeader propdata="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{alert("back icon Clicked")}} />
-//         <Text>Open up App.js to start working on your app!</Text>
-//         <Text>Changes you make will automatically reload.</Text>
-//         <Text>Shake your phone to open the developer menu.</Text>
-//       </View>
-      <Router>
-        <Stack key="root">
-            <Scene key="Home" component={Home} />
-            <Scene key="Login" component={Login} />
-            <Scene key="MainPage" component={MainPage} />
-            <Scene key="Register" component={Register} />
-            <Scene key="Pets" component={Pets} />
-            <Scene key="AdPet" component={AdPet} />
-            
-        </Stack>
-      </Router>
-    );
+      if (this.state.openLoading){
+        return (<View style={[styles.container, styles.horizontal]}>
+              <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+        )
+      }else{
+         // if(this.state.loggedin){
+            return (
+              // <Router>
+              //   <Stack key="root">
+              //     <Scene key="MainPage" component={MainPage} />
+              //     <Scene key="Home" component={Home} /> 
+              //     <Scene key="Login" component={Login} />
+              //     <Scene key="Register" component={Register} />
+              //     <Scene key="Pets" component={Pets} />
+              //     <Scene key="AdPet" component={AdPet} />
+              //     <Scene key="PetDetails" component={PetDetails} />
+              //     <Scene key="Appointment" component={Appointment} />
+              //   </Stack>
+              // </Router>
+
+              <Router>
+                <Lightbox>
+                      {this.state.loggedin ? 
+                      <Scene key="root">
+                      <Scene key="MainPage" component={MainPage} />
+                      <Scene key="Home" component={Home} /> 
+                      </Scene>
+                      :
+                      <Scene key="root">
+                      <Scene key="Home" component={Home} /> 
+                      <Scene key="MainPage" component={MainPage} />
+                      </Scene>
+                      }
+                 
+
+                  {/* Lightbox components will lay over the screen, allowing transparency*/}
+                  <Scene key="Login" component={Login} />
+                  <Scene key="Register" component={Register} />
+                  <Scene key="Pets" component={Pets} />
+                  <Scene key="AdPet" component={AdPet} />
+                  <Scene key="PetDetails" component={PetDetails} />
+                  <Scene key="Appointment" component={Appointment} />
+                </Lightbox>
+              </Router>
+
+
+           // );
+         // }else{
+           // return (
+           //   <Home />
+              // <Router>
+              //   <Stack key="root">
+              //     <Scene key="Home" component={Home} /> 
+              //     <Scene key="MainPage" component={MainPage} />
+              //     <Scene key="Login" component={Login} />
+              //     <Scene key="Register" component={Register} />
+              //     <Scene key="Pets" component={Pets} />
+              //     <Scene key="AdPet" component={AdPet} />
+              //     <Scene key="PetDetails" component={PetDetails} />
+              //     <Scene key="Appointment" component={Appointment} />
+              //   </Stack>
+              // </Router>
+            );
+         // }
+      }
+
+    
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
-});
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
+  }
+})

@@ -56,7 +56,8 @@ export default class Register extends React.Component {
                 address:this.state.address,
                 email:this.state.email,
                 ic:this.state.ic,
-                hp:this.state.hp
+                hp:this.state.hp,
+                type:'user'
             }
             firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then((newuser)=>{

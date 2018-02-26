@@ -42,8 +42,11 @@ export default class Login extends React.Component {
                    // Actions.popTo('Dashboard');
                     //Actions.popTo('Home');
                     //Actions.Home();
-                   // Actions.Pets();
-                    Actions.AdPet();
+                    //Actions.MainPage();
+                    //Actions.push('MainPage');
+                    Actions.jump('MainPage');
+                    //Actions.Pets();
+                   // Actions.AdPet();
 
                    //Actions.popAndPush('Home');
                 })

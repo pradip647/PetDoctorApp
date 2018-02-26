@@ -15,7 +15,30 @@ export default class Pets extends React.Component {
     };
     constructor(props){
         super(props);
-        
+        this.state={
+            allPets:[],
+            dataFound:true
+        }
+        //console.log("dssdcs: " + firebase.auth().currentUser.uid);
+        let ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/');
+        ref.on('value',(snapshot)=>{
+            setTimeout(()=>{
+                this.setState({allPets:[]});
+                if(snapshot.val()){
+                    let data = snapshot.val();
+                    var alldata=[];
+                    for(let key in data){
+                        alldata.push(data[key]);
+                    }
+                    this.setState({
+                        allPets:alldata,
+                        dataFound:false
+                    },()=>{console.log(this.state.allPets)})
+                } 
+            },1000)
+            
+        })
+
     }
 
    
@@ -24,42 +47,54 @@ export default class Pets extends React.Component {
         alert(msg);
     }
 
+    gotoPetDetails(data){
+        Actions.PetDetails({data:data})
+    }
+
 
   render() {
     return (
         // <View>
 
+
         
         <View > 
         
             <View style={{top:30}}>
-                <CustomHeader  Headershow={true} headerName="Pet Details" showDataWelcome={false} showLogoutButton={false} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
+            <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
             </View>
-
+            { this.state.dataFound ? 
+                <View style={{marginTop:40, alignSelf:'center'}}><Text style={{fontWeight:'bold', fontSize:20}}>Loading....</Text></View>
+                :null
+            }
 
             <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31, alignSelf:'center'}}>
-
-                <TouchableOpacity style={{margin:5, width:width-20, height:70, borderColor:'#6f74dd',borderWidth:0.7 }}>
-                        <View style={{flex:1, flexDirection:'row',justifyContent:'space-around'}}>
-                            <Image
-                                    style={{height:70, width:100}}
-                                    //styleName="small rounded-corners"
-                                    source={{ uri: 'https://shoutem.github.io/img/ui-toolkit/examples/image-10.png' }}
-                                />
-                            <View style={{ width:width-90}}>
-                                <View style={{flex:1, flexDirection:'column'}}>
-                                    <View><Text style={{top:10, left:40, fontWeight:'bold', fontSize:18}}>csdcds</Text></View>
-                                    <View><Text style={{top:10, left:40, }}>csdcjsdkssc</Text></View>
+                {this.state.allPets ? 
+                    this.state.allPets.map((item, index)=>{
+                        return ( 
+                            <TouchableOpacity onPress={()=>{this.gotoPetDetails(item)}} style={{margin:5, width:width-20, height:70, borderColor:'#6f74dd',borderWidth:1 }} key={item.petId}>
+                                <View style={{flex:1, flexDirection:'row',justifyContent:'space-around'}}>
+                                    <Image
+                                            style={{height:70, width:100}}
+                                            //styleName="small rounded-corners"
+                                            source={{ uri: 'https://shoutem.github.io/img/ui-toolkit/examples/image-10.png' }}
+                                        />
+                                    <View style={{ width:width-90}}>
+                                        <View style={{flex:1, flexDirection:'column'}}>
+                                            <View><Text style={{top:10, left:40, fontWeight:'bold', fontSize:18}}>{item.name}</Text></View>
+                                            <View><Text style={{top:10, left:40, }}>{item.species}</Text></View>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </View>
-                </TouchableOpacity>
-                       
+                            </TouchableOpacity>
+                        )
+                    }) :null
+                }    
             </ScrollView> 
             <ActionButton
                 style={{position:'absolute', bottom:10, right:5,}}
                 buttonColor="rgba(231,76,60,1)"
-                onPress={() => { console.log("hi")}}
+                onPress={() => { Actions.AdPet()}}
             />
         </View>
 
