@@ -74,7 +74,7 @@ export default class MainPage extends React.Component {
                     </View>
                     </TouchableOpacity>
                     
-                    <TouchableOpacity onPress={()=>{alert("hello")}} style={{margin:3}}> 
+                    <TouchableOpacity onPress={()=>{Actions.Reminder()}} style={{margin:3}}> 
                 <CustomImage
                         imageViewStyle={{alignSelf:'center'}}
                         imageTagStyle={{height:((height-110)/3), width:(width-5)}}
