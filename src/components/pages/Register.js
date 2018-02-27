@@ -147,7 +147,7 @@ export default class Register extends React.Component {
                         />
 
                         <View style={{marginTop:20, alignItems:'center'}}>
-                            <CustomButton onPress={()=>{this.SubmitPet()}}>Sign Up</CustomButton>
+                            <CustomButton onPress={()=>{this.SignUpBtn()}}>Sign Up</CustomButton>
 
                             <View style={{height:60}}>
                                 <View >

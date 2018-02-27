@@ -16,19 +16,36 @@ export default class Appointment extends React.Component {
         super(props);
         this.state={
             alldata:[],
-            date: new Date(),
+            date: this.formatLocalDate(),
             time:'',
-            selectPet:'',
+            selectPet:null,
             username:'',
+            diseases:'',
             mobile:'',
             prefDoct:'',
-            comment:''
-
-
+            comment:'',
+            allDoctor:[]
         }
     }
+
+    formatLocalDate() {
+        var now = new Date(),
+          tzo = -now.getTimezoneOffset(),
+          dif = tzo >= 0 ? '+' : '-',
+          pad = function(num) {
+              var norm = Math.abs(Math.floor(num));
+              return (norm < 10 ? '0' : '') + norm;
+          };
+          return now.getFullYear() 
+              + '-' + pad(now.getMonth()+1)
+              + '-' + pad(now.getDate())
+          
+    }
+
+
     componentWillMount(){
         let ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/');
+        let docRef = firebase.database().ref('users/');
         ref.on('value',(snapshot)=>{
             if(snapshot.val()){
                 let datasnap=[];
@@ -39,16 +56,83 @@ export default class Appointment extends React.Component {
                 this.setState({alldata:datasnap})
             }
         })
-    }
-
-    SignUpBtn(){
-       
-
+        docRef.on('value',(snap)=>{
+            if(snap.val()){
+                let dData = snap.val();
+                var doctors=[];
+                for (let key in dData){
+                    dData[key].uid = key;
+                    if(dData[key].type){
+                        if(dData[key].type == 'doctor'){
+                            doctors.push(dData[key]);
+                        }
+                    }
+                }
+                this.setState({allDoctor:doctors});
+            }
+        })
     }
 
     openAlert(msg){
         alert(msg);
     }
+
+    //submit pet Appointment
+    SubmitPet(){
+       // alert("hello");
+  //console.log(this.state.date,this.state.selectPet, this.state.prefDoct);
+        if(this.state.date =='' || this.state.date == undefined || this.state.date == null ||
+            this.state.time == '' || this.state.time == undefined || this.state.time == null || 
+            this.state.selectPet == ''|| this.state.selectPet == undefined || this.state.selectPet == null ||
+            this.state.diseases == '' || this.state.diseases == undefined || this.state.diseases == null ||
+            this.state.username == '' || this.state.username == undefined || this.state.username == null ||
+            this.state.mobile =='' || this.state.mobile == undefined || this.state.mobile == null ||
+            this.state.prefDoct == '' || this.state.prefDoct == undefined || this.state.prefDoct == null
+            ){
+
+                if(this.state.date =='' || this.state.date == undefined || this.state.date == null){
+                    this.openAlert("date");
+                }else if(this.state.time == '' || this.state.time == undefined || this.state.time == null){
+                    this.openAlert("time");
+                }else if(this.state.selectPet == ''|| this.state.selectPet == undefined || this.state.selectPet == null){
+                    this.openAlert("pet");
+                }else if(this.state.diseases == '' || this.state.diseases == undefined || this.state.diseases == null){
+                    this.openAlert("diseases");
+                }else if(this.state.username == '' || this.state.username == undefined || this.state.username == null){
+                    this.openAlert("username");
+                }else if(this.state.mobile =='' || this.state.mobile == undefined || this.state.mobile == null){
+                    this.openAlert("mobile");
+                }else if(this.state.prefDoct == '' || this.state.prefDoct == undefined || this.state.prefDoct == null){
+                    this.openAlert("doctor");
+                }
+
+                
+            }else{
+                console.log("else part working");
+                let data={
+                    date:this.state.date,
+                    time:this.state.time,
+                    selectPet:this.state.selectPet.petId,
+                    petname:this.state.selectPet.name,
+                    species:this.state.selectPet.species,
+                    breed:this.state.selectPet.breedName,
+                    ownerUsername:this.state.username,
+                    ownerContact:this.state.mobile,
+                    doctor:this.state.prefDoct,
+                    diseases:this.state.diseases,
+                    ownerUid:firebase.auth().currentUser.uid,
+                    comment:this.state.comment
+                }
+                firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/' + this.state.selectPet.petId + '/myAppointment/').push(data).then((success)=>{
+                    firebase.database().ref('users/' + this.state.prefDoct + '/myAppointment/' + success.key + '/' ).set(data);
+                    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/myAppointment/' + success.key + '/' ).set(data);
+                    firebase.database().ref('myAppointment/' +  success.key +'/' ).set(data).then(()=>{Actions.pop()});
+                }).catch((error)=>{console.log(error)});
+            }
+
+
+    }
+
 
 
   render() {
@@ -68,7 +152,7 @@ export default class Appointment extends React.Component {
                     <View style={{marginTop:30}}>
 
                         <DatePicker
-                                style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                                style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
                                 date={this.state.date}
                                 mode="date"
                                 placeholder="Select Date"
@@ -84,28 +168,52 @@ export default class Appointment extends React.Component {
                                 onDateChange={(date) => {this.setState({date: date})}}
                         />
 
-                        <CustomInputText
-                            placeholder=" Time"
-                            value={this.state.name}
-                            onChangeText={text=>this.setState({name:text})}
+
+                        <DatePicker
+                                style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                                date={this.state.time}
+                                mode="time"
+                                placeholder="Select Time"
+                                format="HH-MM"
+                                //  minDate={new Date()}
+                                //maxDate="2016-06-01"
+                                is24Hour={false}
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                customStyles={{
+                                dateIcon: { position: 'absolute', left: 20, top: 4, marginLeft: 0 },
+                                dateInput: { borderColor:'#fff',borderWidth:0, }
+                                }}
+                                onDateChange={(time) => {console.log(time);this.setState({time: time})}}
                         />
 
-                        <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}>
+                        {/* <CustomInputText
+                            placeholder=" Time"
+                            value={this.state.time}
+                            onChangeText={text=>this.setState({time:text})}
+                        /> */}
+
+                        <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff', margin:3 }}>
                             <Picker
                                 style={{width:200, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
                                 selectedValue={this.state.selectPet}
-                                onValueChange={(itemValue, itemIndex) => this.setState({selectPet: itemValue})}>
+                                onValueChange={(itemValue, itemIndex) => {this.setState({selectPet: itemValue},()=>{console.log(this.state.selectPet)});}}>
                                 <Picker.Item label='Select Your Pet' value={null} />
                                 {
                                     this.state.alldata? 
                                     this.state.alldata.map((item, index)=>{
-                                        return <Picker.Item label={item.name} value={item.petId} />
+                                        return <Picker.Item label={item.name} value={item} />
                                     })
                                     :null
                                 }
                             </Picker>
                         </View>
-                        
+
+                        <CustomInputText
+                            placeholder=" Please Enter diseases"
+                            value={this.state.diseases}
+                            onChangeText={text=>this.setState({diseases:text})}
+                        />
                         <CustomInputText
                             placeholder=" Please Enter Username"
                             value={this.state.username}
@@ -113,18 +221,36 @@ export default class Appointment extends React.Component {
                         />
                         <CustomInputText
                             placeholder=" Please Enter Mobile Number"
-                            value={this.state.ic}
+                            value={this.state.mobile}
                             onChangeText={text=>this.setState({mobile:text})}
                         />
-                        <CustomInputText
+                    
+                        <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}>
+                            <Picker
+                                style={{width:200, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                                selectedValue={this.state.prefDoct}
+                                onValueChange={(itemValue, itemIndex) => this.setState({prefDoct: itemValue})}>
+                                <Picker.Item label='Preffered Doctor' value={null} />
+                                {
+                                    this.state.allDoctor? 
+                                    this.state.allDoctor.map((item, index)=>{
+                                        return <Picker.Item label={item.name} value={item.uid} />
+                                    })
+                                    :null
+                                }
+                            </Picker>
+                        </View>
+
+
+                        {/* <CustomInputText
                             placeholder=" Preffered Dr"
                             value={this.state.hp}
                             onChangeText={text=>this.setState({hp:text})}
-                        />
+                        /> */}
                         <CustomInputText
                             placeholder=" Additional Comments"
-                            value={this.state.password}
-                            onChangeText={text=>this.setState({password:text})}
+                            value={this.state.comment}
+                            onChangeText={text=>this.setState({comment:text})}
                         />
                         <View style={{marginTop:20, alignItems:'center'}}>
                             <CustomButton onPress={()=>{this.SubmitPet()}}>Submit</CustomButton>

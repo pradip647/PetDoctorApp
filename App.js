@@ -9,6 +9,9 @@ import Pets from './src/components/pages/Pets';
 import AdPet from './src/components/pages/Adpet';
 import PetDetails from './src/components/pages/PetDetails';
 import Appointment from './src/components/pages/Appointment';
+import SuccessPage from './src/components/pages/Success';
+import FailPage from './src/components/pages/Fail';
+import PastHistory from './src/components/pages/PastHistory';
 
 import {Router, Route, Schema, Animations, TabBar,Stack,Scene, Actions,Lightbox} from 'react-native-router-flux'
 import * as firebase from 'firebase';
@@ -32,7 +35,7 @@ export default class App extends React.Component {
       messagingSenderId: "955540918554"
     };
     firebase.initializeApp(config);
-    //console.disableYellowBox = true;
+    console.disableYellowBox = true;
     firebase.auth().onAuthStateChanged((user)=>{
       if(user){
         console.log("user found");
@@ -59,65 +62,77 @@ export default class App extends React.Component {
         )
       }else{
          // if(this.state.loggedin){
-            return (
+            //return (
+              // <SuccessPage />
+             // <MainPage />
+
+              
+
+
+
               // <Router>
-              //   <Stack key="root">
-              //     <Scene key="MainPage" component={MainPage} />
-              //     <Scene key="Home" component={Home} /> 
+              //   <Lightbox>
+              //         {this.state.loggedin ? 
+              //         <Scene key="root">
+              //         <Scene key="MainPage" component={MainPage} />
+              //         <Scene key="Home" component={Home} /> 
+              //         </Scene>
+              //         :
+              //         <Scene key="root">
+              //         <Scene key="Home" component={Home} /> 
+              //         <Scene key="MainPage" component={MainPage} />
+              //         </Scene>
+              //         }
               //     <Scene key="Login" component={Login} />
               //     <Scene key="Register" component={Register} />
               //     <Scene key="Pets" component={Pets} />
               //     <Scene key="AdPet" component={AdPet} />
               //     <Scene key="PetDetails" component={PetDetails} />
               //     <Scene key="Appointment" component={Appointment} />
-              //   </Stack>
+              //   </Lightbox>
               // </Router>
 
-              <Router>
-                <Lightbox>
-                      {this.state.loggedin ? 
-                      <Scene key="root">
-                      <Scene key="MainPage" component={MainPage} />
-                      <Scene key="Home" component={Home} /> 
-                      </Scene>
-                      :
-                      <Scene key="root">
-                      <Scene key="Home" component={Home} /> 
-                      <Scene key="MainPage" component={MainPage} />
-                      </Scene>
-                      }
-                 
 
-                  {/* Lightbox components will lay over the screen, allowing transparency*/}
-                  <Scene key="Login" component={Login} />
-                  <Scene key="Register" component={Register} />
-                  <Scene key="Pets" component={Pets} />
-                  <Scene key="AdPet" component={AdPet} />
-                  <Scene key="PetDetails" component={PetDetails} />
-                  <Scene key="Appointment" component={Appointment} />
-                </Lightbox>
-              </Router>
+              //);
 
 
-           // );
-         // }else{
+            // return(
+            //   <Router>
+            //     <Stack key="root">
+            //       <Scene key="MainPage" component={MainPage} />
+            //       <Scene key="Home" component={Home} /> 
+            //       <Scene key="Login" component={Login} />
+            //       <Scene key="Register" component={Register} />
+            //       <Scene key="Pets" component={Pets} />
+            //       <Scene key="AdPet" component={AdPet} />
+            //       <Scene key="PetDetails" component={PetDetails} />
+            //       <Scene key="Appointment" component={Appointment} />
+            //     </Stack>
+            //   </Router>
+            // )
+        //  }else{
            // return (
-           //   <Home />
-              // <Router>
-              //   <Stack key="root">
-              //     <Scene key="Home" component={Home} /> 
-              //     <Scene key="MainPage" component={MainPage} />
-              //     <Scene key="Login" component={Login} />
-              //     <Scene key="Register" component={Register} />
-              //     <Scene key="Pets" component={Pets} />
-              //     <Scene key="AdPet" component={AdPet} />
-              //     <Scene key="PetDetails" component={PetDetails} />
-              //     <Scene key="Appointment" component={Appointment} />
-              //   </Stack>
-              // </Router>
-            );
-         // }
-      }
+              // <FailPage />
+             // <Home/>
+           // );
+            return(
+              <Router>
+              {/* <Stack key="root"> */}
+              <Stack key="root">
+                <Scene key="Home" component={Home} /> 
+                <Scene key="MainPage" component={MainPage} />
+                <Scene key="Login" component={Login} />
+                <Scene key="Register" component={Register} />
+                <Scene key="Pets" component={Pets} />
+                <Scene key="AdPet" component={AdPet} />
+                <Scene key="PetDetails" component={PetDetails} />
+                <Scene key="Appointment" component={Appointment} />
+                <Scene key="PastHistory" component={PastHistory} />
+              </Stack>
+            </Router>
+            )
+          }
+     // }
 
     
   }

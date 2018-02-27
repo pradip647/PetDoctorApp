@@ -45,6 +45,7 @@ export default class Login extends React.Component {
                     //Actions.MainPage();
                     //Actions.push('MainPage');
                     Actions.jump('MainPage');
+                    //Actions.jump('PastHistory');
                     //Actions.Pets();
                    // Actions.AdPet();
 

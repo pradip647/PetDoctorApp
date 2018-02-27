@@ -2,7 +2,7 @@ import CustomHeader from './CustomHeader';
 import CustomButton from './CustomButton';
 import CustomInputText from './CustomInputText'
 import CustomImage from './CustomImage';
-import CustomCardImg from './CustomCardImg';
+import CustomRow from './CustomRow';
 
 
 
@@ -11,5 +11,5 @@ export {
     CustomButton,
     CustomInputText,
     CustomImage,
-    CustomCardImg
+    CustomRow
 }
