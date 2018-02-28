@@ -13,6 +13,8 @@ import SuccessPage from './src/components/pages/Success';
 import FailPage from './src/components/pages/Fail';
 import PastHistory from './src/components/pages/PastHistory';
 import Reminder from './src/components/pages/Reminder';
+import About from './src/components/pages/About';
+import Contact from './src/components/pages/Contact';
 
 import {Router, Route, Schema, Animations, TabBar,Stack,Scene, Actions,Lightbox} from 'react-native-router-flux'
 import * as firebase from 'firebase';
@@ -78,6 +80,8 @@ export default class App extends React.Component {
                   <Scene key="Appointment" component={Appointment} />
                   <Scene key="PastHistory" component={PastHistory} />
                   <Scene key="Reminder" component={Reminder} />
+                  <Scene key="About" component={About} />
+                  <Scene key="Contact" component={Contact} />
                 </Stack>
               </Router>
             )

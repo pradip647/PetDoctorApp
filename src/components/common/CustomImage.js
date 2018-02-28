@@ -2,11 +2,12 @@ import React from 'react';
 import {View,Image,Dimensions, Text} from 'react-native';
 
 //make a compontent
-const CustomImage = ({onPress, children,imageViewStyle,imageTagStyle, imageURL}) =>{
+const CustomImage = ({onPress, children,imageViewStyle,imageTagStyle, imageURL, resizeMode}) =>{
     const { buttonStyle,textStyle,buttomViewStyle } = styles;
    return (
     <View style={imageViewStyle}>
         <Image
+            resizeMode={resizeMode}
             style={imageTagStyle}
             styleName="medium-square"
             source={imageURL} />

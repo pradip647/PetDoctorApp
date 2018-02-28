@@ -49,15 +49,15 @@ export default class Home extends React.Component {
                 <View style={flexMainView}>
                         <View style={flexSubView}>
 
-                            <TouchableOpacity onPress={()=>{this.openAlert('About')}}>
+                            <TouchableOpacity onPress={()=>{Actions.About()}}>
                                 <View style={{width: 110, height: 50, }}><Text style={{fontSize:12,color:'#000', margin:15, alignSelf:'center', }}>About Us</Text></View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>{this.openAlert('Contact')}}>
+                            <TouchableOpacity onPress={()=>{Actions.Contact()}}>
                                 <View style={{width: 110, height: 50,}}><Text style={{fontSize:12,color:'#000', margin:15, alignSelf:'center' , }}>Contact Us</Text></View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>{this.openAlert('Location')}}>
+                            {/* <TouchableOpacity onPress={()=>{this.openAlert('Location')}}>
                                 <View style={{width: 110, height: 50, }}><Text style={{fontSize:12,color:'#000', margin:15, alignSelf:'center', }}>Location</Text></View>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
 
                         </View>
                 </View>   
