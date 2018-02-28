@@ -40,7 +40,6 @@ export default class App extends React.Component {
     firebase.initializeApp(config);
     console.disableYellowBox = true;
 
-    
     firebase.auth().onAuthStateChanged((user)=>{
       if(user){
         console.log("user found");
@@ -48,29 +47,39 @@ export default class App extends React.Component {
           loggedin:true,
           openLoading:false
         });
+        Actions.MainPage();
       }else{
         console.log("user not found");
         this.setState({
           loggedin:false,
           openLoading:false
+          
         });
+        
+         // Actions.Home();
+
       }
     })
 
+
   }
+
+  compo
 
   render() {
       if (this.state.openLoading){
         return (<View style={[styles.container, styles.horizontal]}>
-              <ActivityIndicator size="large" color="#0000ff" />
-        </View>
+                <ActivityIndicator size="large" color="#0000ff" />
+                </View>
         )
       }else{
-            return(
+            // if(this.state.loggedin){
+            //   return <MainPage />
+            // }else{
+              return (
               <Router>
-              {/* <Stack key="root"> */}
-                <Stack key="root">
-                  <Scene key="Home" component={Home} /> 
+                <Scene key="root">
+                  <Scene key="Home" component={Home}  /> 
                   <Scene key="MainPage" component={MainPage} />
                   <Scene key="Login" component={Login} />
                   <Scene key="Register" component={Register} />
@@ -82,9 +91,10 @@ export default class App extends React.Component {
                   <Scene key="Reminder" component={Reminder} />
                   <Scene key="About" component={About} />
                   <Scene key="Contact" component={Contact} />
-                </Stack>
+                </Scene>
               </Router>
-            )
+              )
+          
           }
      // }
 

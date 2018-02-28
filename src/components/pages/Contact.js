@@ -96,7 +96,7 @@ export default class Contact extends React.Component {
         //phone_icon.png
         <View>
             <View style={{top:30}}>
-                <CustomHeader  Headershow={true} headerName="About Us" showDataWelcome={false} showLogoutButton={false} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
+                <CustomHeader  Headershow={true} headerName="Contact Us" showDataWelcome={false} showLogoutButton={false} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
             </View>
             <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>
                 <View style={{marginTop:50}}>

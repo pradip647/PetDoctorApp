@@ -151,7 +151,7 @@ export default class Register extends React.Component {
 
                             <View style={{height:60}}>
                                 <View >
-                                    <Text>Back to Sign in</Text>
+                                    <Text onPress={()=>{Actions.pop()}}>Back to Sign in</Text>
                                 </View>
                             </View>
                             

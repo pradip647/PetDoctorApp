@@ -16,6 +16,7 @@ export default class MainPage extends React.Component {
         
     }
     async componentWillMount(){
+
         try {
             let uid = await firebase.auth().currentUser.uid;
             if(uid)
@@ -27,7 +28,6 @@ export default class MainPage extends React.Component {
            }
      
          }
-     
          catch(e){
           console.log(e)
          }
@@ -41,7 +41,7 @@ export default class MainPage extends React.Component {
     return (
         <View style={styles.mainView}>
             <View style={{top:30}}>
-            <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {false} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut()}} onPressBack={()=>{Actions.pop()}}/>
+            <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {false} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>Actions.Home())}} onPressBack={()=>{Actions.pop()}}/>
             </View>
             <View style={{top:30,}}>
                 <View>
