@@ -41,7 +41,7 @@ export default class MainPage extends React.Component {
     return (
         <View style={styles.mainView}>
             <View style={{top:30}}>
-            <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {false} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>Actions.Home())}} onPressBack={()=>{Actions.pop()}}/>
+            <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {false} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}} onPressBack={()=>{Actions.pop()}}/>
             </View>
             <View style={{top:30,}}>
                 <View>

@@ -9,8 +9,8 @@ import Pets from './src/components/pages/Pets';
 import AdPet from './src/components/pages/Adpet';
 import PetDetails from './src/components/pages/PetDetails';
 import Appointment from './src/components/pages/Appointment';
-import SuccessPage from './src/components/pages/Success';
-import FailPage from './src/components/pages/Fail';
+// import SuccessPage from './src/components/pages/Success';
+// import FailPage from './src/components/pages/Fail';
 import PastHistory from './src/components/pages/PastHistory';
 import Reminder from './src/components/pages/Reminder';
 import About from './src/components/pages/About';
@@ -47,7 +47,8 @@ export default class App extends React.Component {
           loggedin:true,
           openLoading:false
         });
-        Actions.MainPage();
+        Actions.reset('MainPage')
+        //Actions.MainPage();
       }else{
         console.log("user not found");
         this.setState({

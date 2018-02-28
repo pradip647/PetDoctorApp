@@ -50,7 +50,7 @@ export default class PastHistory extends React.Component {
             
             <View>
                 <View style={{top:30}}>
-                    <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut()}} onPressBack={()=>{Actions.pop()}}/>
+                    <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}} onPressBack={()=>{Actions.pop()}}/>
                 </View>
             <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>
             
