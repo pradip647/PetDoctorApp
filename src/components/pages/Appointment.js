@@ -79,8 +79,6 @@ export default class Appointment extends React.Component {
 
     //submit pet Appointment
     SubmitPet(){
-       // alert("hello");
-  //console.log(this.state.date,this.state.selectPet, this.state.prefDoct);
         if(this.state.date =='' || this.state.date == undefined || this.state.date == null ||
             this.state.time == '' || this.state.time == undefined || this.state.time == null || 
             this.state.selectPet == ''|| this.state.selectPet == undefined || this.state.selectPet == null ||
@@ -108,7 +106,6 @@ export default class Appointment extends React.Component {
 
                 
             }else{
-                console.log("else part working");
                 let data={
                     date:this.state.date,
                     time:this.state.time,
@@ -129,135 +126,112 @@ export default class Appointment extends React.Component {
                     firebase.database().ref('myAppointment/' +  success.key +'/' ).set(data).then(()=>{Actions.pop()});
                 }).catch((error)=>{console.log(error)});
             }
-
-
     }
-
 
 
   render() {
     return (
-        // <View>
-
-        
         <View>
             <View style={{top:30}}>
-            <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}} onPressBack={()=>{Actions.pop()}}/>
-        </View>
-        <View style={{top:32, height:50, width:width, borderWidth:0.5, borderColor:'#002984', borderTopColor:'#002984'}}>
-            <Text style={{alignSelf:'center',fontSize:20,padding:5, fontWeight:'bold', color:'#002984' }}>Book Appointment</Text>
-        </View>
-        <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>
-          
-                    <View style={{marginTop:30}}>
+                <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}} onPressBack={()=>{Actions.pop()}}/>
+            </View>
+            <View style={{top:32, height:50, width:width, borderWidth:0.5, borderColor:'#002984', borderTopColor:'#002984'}}>
+                <Text style={{alignSelf:'center',fontSize:20,padding:5, fontWeight:'bold', color:'#002984' }}>Book Appointment</Text>
+            </View>
+            <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>
+            
+                <View style={{marginTop:30}}>
+                    <DatePicker
+                            style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                            date={this.state.date}
+                            mode="date"
+                            placeholder="Select Date"
+                            format="YYYY-MM-DD"
+                            minDate={new Date()}
+                            //maxDate="2016-06-01"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                            dateIcon: { position: 'absolute', left: 20, top: 4, marginLeft: 0 },
+                            dateInput: { borderColor:'#fff',borderWidth:0, }
+                            }}
+                            onDateChange={(date) => {this.setState({date: date})}}
+                    />
+                    <DatePicker
+                            style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                            date={this.state.time}
+                            mode="time"
+                            placeholder="Select Time"
+                            format="HH-MM"
+                            //  minDate={new Date()}
+                            //maxDate="2016-06-01"
+                            is24Hour={false}
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                            dateIcon: { position: 'absolute', left: 20, top: 4, marginLeft: 0 },
+                            dateInput: { borderColor:'#fff',borderWidth:0, }
+                            }}
+                            onDateChange={(time) => {console.log(time);this.setState({time: time})}}
+                    />
+                    <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff', margin:3 }}>
+                        <Picker
+                            style={{width:200, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                            selectedValue={this.state.selectPet}
+                            onValueChange={(itemValue, itemIndex) => {this.setState({selectPet: itemValue},()=>{console.log(this.state.selectPet)});}}>
+                            <Picker.Item label='Select Your Pet' value={null} />
+                            {
+                                this.state.alldata? 
+                                this.state.alldata.map((item, index)=>{
+                                    return <Picker.Item label={item.name} value={item} />
+                                })
+                                :null
+                            }
+                        </Picker>
+                    </View>
 
-                        <DatePicker
-                                style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
-                                date={this.state.date}
-                                mode="date"
-                                placeholder="Select Date"
-                                format="YYYY-MM-DD"
-                                minDate={new Date()}
-                                //maxDate="2016-06-01"
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
-                                customStyles={{
-                                dateIcon: { position: 'absolute', left: 20, top: 4, marginLeft: 0 },
-                                dateInput: { borderColor:'#fff',borderWidth:0, }
-                                }}
-                                onDateChange={(date) => {this.setState({date: date})}}
-                        />
-
-
-                        <DatePicker
-                                style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
-                                date={this.state.time}
-                                mode="time"
-                                placeholder="Select Time"
-                                format="HH-MM"
-                                //  minDate={new Date()}
-                                //maxDate="2016-06-01"
-                                is24Hour={false}
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
-                                customStyles={{
-                                dateIcon: { position: 'absolute', left: 20, top: 4, marginLeft: 0 },
-                                dateInput: { borderColor:'#fff',borderWidth:0, }
-                                }}
-                                onDateChange={(time) => {console.log(time);this.setState({time: time})}}
-                        />
-
-                        {/* <CustomInputText
-                            placeholder=" Time"
-                            value={this.state.time}
-                            onChangeText={text=>this.setState({time:text})}
-                        /> */}
-
-                        <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff', margin:3 }}>
-                            <Picker
-                                style={{width:200, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
-                                selectedValue={this.state.selectPet}
-                                onValueChange={(itemValue, itemIndex) => {this.setState({selectPet: itemValue},()=>{console.log(this.state.selectPet)});}}>
-                                <Picker.Item label='Select Your Pet' value={null} />
-                                {
-                                    this.state.alldata? 
-                                    this.state.alldata.map((item, index)=>{
-                                        return <Picker.Item label={item.name} value={item} />
-                                    })
-                                    :null
-                                }
-                            </Picker>
-                        </View>
-
-                        <CustomInputText
-                            placeholder=" Please Enter diseases"
-                            value={this.state.diseases}
-                            onChangeText={text=>this.setState({diseases:text})}
-                        />
-                        <CustomInputText
-                            placeholder=" Please Enter Username"
-                            value={this.state.username}
-                            onChangeText={text=>this.setState({username:text})}
-                        />
-                        <CustomInputText
-                            placeholder=" Please Enter Mobile Number"
-                            value={this.state.mobile}
-                            onChangeText={text=>this.setState({mobile:text})}
-                        />
-                    
-                        <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}>
-                            <Picker
-                                style={{width:200, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
-                                selectedValue={this.state.prefDoct}
-                                onValueChange={(itemValue, itemIndex) => this.setState({prefDoct: itemValue})}>
-                                <Picker.Item label='Preffered Doctor' value={null} />
-                                {
-                                    this.state.allDoctor? 
-                                    this.state.allDoctor.map((item, index)=>{
-                                        return <Picker.Item label={item.name} value={item.uid} />
-                                    })
-                                    :null
-                                }
-                            </Picker>
-                        </View>
-
-
-                        {/* <CustomInputText
-                            placeholder=" Preffered Dr"
-                            value={this.state.hp}
-                            onChangeText={text=>this.setState({hp:text})}
-                        /> */}
-                        <CustomInputText
-                            placeholder=" Additional Comments"
-                            value={this.state.comment}
-                            onChangeText={text=>this.setState({comment:text})}
-                        />
-                        <View style={{marginTop:20, alignItems:'center'}}>
-                            <CustomButton onPress={()=>{this.SubmitPet()}}>Submit</CustomButton>
-                        </View>
-                    </View> 
+                    <CustomInputText
+                        placeholder=" Please Enter diseases"
+                        value={this.state.diseases}
+                        onChangeText={text=>this.setState({diseases:text})}
+                    />
+                    <CustomInputText
+                        placeholder=" Please Enter Username"
+                        value={this.state.username}
+                        onChangeText={text=>this.setState({username:text})}
+                    />
+                    <CustomInputText
+                        placeholder=" Please Enter Mobile Number"
+                        value={this.state.mobile}
+                        onChangeText={text=>this.setState({mobile:text})}
+                    />
+                
+                    <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}>
+                        <Picker
+                            style={{width:200, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                            selectedValue={this.state.prefDoct}
+                            onValueChange={(itemValue, itemIndex) => this.setState({prefDoct: itemValue})}>
+                            <Picker.Item label='Preffered Doctor' value={null} />
+                            {
+                                this.state.allDoctor? 
+                                this.state.allDoctor.map((item, index)=>{
+                                    return <Picker.Item label={item.name} value={item.uid} />
+                                })
+                                :null
+                            }
+                        </Picker>
+                    </View>
+                    <CustomInputText
+                        placeholder=" Additional Comments"
+                        value={this.state.comment}
+                        onChangeText={text=>this.setState({comment:text})}
+                    />
+                    <View style={{marginTop:20, alignItems:'center'}}>
+                        <CustomButton onPress={()=>{this.SubmitPet()}}>Submit</CustomButton>
+                    </View>
+                </View> 
             </ScrollView> 
-         </View>
+        </View>
     );
   }
 }

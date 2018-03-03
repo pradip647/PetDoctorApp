@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View,ActivityIndicator } from 'react-native';
+import {Router, Route, Schema, Animations, TabBar,Stack,Scene, Actions,Lightbox} from 'react-native-router-flux'
+//Custom component
 import {CustomHeader} from './src/components/common';
+//pages
 import Home from './src/components/pages/Home';
 import Login from './src/components/pages/Login';
 import Register from './src/components/pages/Register';
@@ -9,22 +12,17 @@ import Pets from './src/components/pages/Pets';
 import AdPet from './src/components/pages/Adpet';
 import PetDetails from './src/components/pages/PetDetails';
 import Appointment from './src/components/pages/Appointment';
-// import SuccessPage from './src/components/pages/Success';
-// import FailPage from './src/components/pages/Fail';
 import PastHistory from './src/components/pages/PastHistory';
 import Reminder from './src/components/pages/Reminder';
 import About from './src/components/pages/About';
 import Contact from './src/components/pages/Contact';
 
-import {Router, Route, Schema, Animations, TabBar,Stack,Scene, Actions,Lightbox} from 'react-native-router-flux'
 import * as firebase from 'firebase';
-
 
 export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      loggedin:false,
       openLoading:true
     }
   }
@@ -41,25 +39,12 @@ export default class App extends React.Component {
     console.disableYellowBox = true;
 
     firebase.auth().onAuthStateChanged((user)=>{
-      if(user){
-        console.log("user found");
-        this.setState({
-          loggedin:true,
-          openLoading:false
-        });
-        Actions.reset('MainPage')
-        //Actions.MainPage();
-      }else{
-        console.log("user not found");
-        this.setState({
-          loggedin:false,
-          openLoading:false
-          
-        });
-        
-         // Actions.Home();
-
-      }
+        if(user){
+          this.setState({ openLoading:false });
+          Actions.reset('MainPage')
+        }else{
+          this.setState({ openLoading:false });
+        }
     })
 
 
@@ -69,14 +54,12 @@ export default class App extends React.Component {
 
   render() {
       if (this.state.openLoading){
-        return (<View style={[styles.container, styles.horizontal]}>
-                <ActivityIndicator size="large" color="#0000ff" />
-                </View>
-        )
+          return (
+              <View style={[styles.container, styles.horizontal]}>
+                  <ActivityIndicator size="large" color="#0000ff" />
+              </View>
+          )
       }else{
-            // if(this.state.loggedin){
-            //   return <MainPage />
-            // }else{
               return (
               <Router>
                 <Scene key="root">
@@ -95,22 +78,19 @@ export default class App extends React.Component {
                 </Scene>
               </Router>
               )
-          
-          }
-     // }
-
-    
+      }
   }
+
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10
-  }
+    container: {
+      flex: 1,
+      justifyContent: 'center'
+    },
+    horizontal: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      padding: 10
+    }
 })

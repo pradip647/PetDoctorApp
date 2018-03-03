@@ -1,13 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView,Platform, Button, Alert } from 'react-native';
 import { CustomHeader,CustomButton,CustomInputText,CustomImage} from '../common';
-// import { ScrollView } from 'react-native-gesture-handler';
- import { Actions } from 'react-native-router-flux';
- import * as firebase from 'firebase';
- import { ImagePicker } from 'expo';
-
+import { Actions } from 'react-native-router-flux';
+import * as firebase from 'firebase';
+import { ImagePicker } from 'expo';
 
 var {height, width} = Dimensions.get('window');
+
 export default class AdPet extends React.Component {
     
     static navigationOptions = {
@@ -43,27 +42,26 @@ export default class AdPet extends React.Component {
                 }else if(this.state.petDob == '' || this.state.petDob==undefined || this.state.petDob==null){
                     this.openAlert('Pet D.O.B can not be blank');
                 }
-            }else{
-                firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/').push({
-                    name:this.state.petName,
-                    species:this.state.petSpecies,
-                    breedName:this.state.breedName,
-                    dob:this.state.petDob
-                }).then((snap)=>{
-                    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/' + snap.key + '/').update({
-                        petId:snap.key
-                    }).then(()=>{
-                        this.setState({
-                            petName:'',
-                            petSpecies:'',
-                            breedName:'',
-                            petDob:'',
-                            petInfo:''
-                        },()=>{Actions.pop();})
-                        //this.openAlert("pet resigtration successfull");
-                    })
-                }).catch((error)=>this.openAlert(error));
-            }
+        }else{
+            firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/').push({
+                name:this.state.petName,
+                species:this.state.petSpecies,
+                breedName:this.state.breedName,
+                dob:this.state.petDob
+            }).then((snap)=>{
+                firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/' + snap.key + '/').update({
+                    petId:snap.key
+                }).then(()=>{
+                    this.setState({
+                        petName:'',
+                        petSpecies:'',
+                        breedName:'',
+                        petDob:'',
+                        petInfo:''
+                    },()=>{Actions.pop();})
+                })
+            }).catch((error)=>this.openAlert(error));
+        }
     }
 
     _pickImage = async () => {
@@ -110,18 +108,6 @@ export default class AdPet extends React.Component {
             <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}} onPressBack={()=>{Actions.pop()}}/>
         </View>
         <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>
-        
-                {/* <View style={{marginTop:10}}>
-                <TouchableOpacity onPress={()=>{this._pickImage()}}>
-                    <CustomImage
-                        imageViewStyle={{alignSelf:'center'}}
-                        imageTagStyle={{height:150, width:150, borderRadius:75}}
-                        imageURL={{uri:this.state.image ? this.state.image : 'http://www.imag.co.uk/images/gravel/raisby-golden-gravel-lg-1.jpg'}}
-                    />
-                    </TouchableOpacity>
-                </View> */}
-
-                    {/* <View style={{marginTop:30}}> */}
                     <View style={{marginTop:80}}>
                         <CustomInputText
                             placeholder=" Pet Name"
@@ -148,21 +134,15 @@ export default class AdPet extends React.Component {
                             value={this.state.petInfo}
                             onChangeText={text=>this.setState({petInfo:text})}
                         />
-
                         <View style={{marginTop:20, alignItems:'center',height:60}}>
                             <CustomButton onPress={()=>{this.SignUpBtn()}}>Submit</CustomButton>
-                            
                         </View>
                     </View>
-         
             </ScrollView> 
          </View>
-
-
-
-    
     );
   }
+  
 }
 
 const styles = StyleSheet.create({
