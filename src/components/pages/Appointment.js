@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView,Picker } from 'react-native';
+import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView,Picker,AsyncStorage } from 'react-native';
 import { CustomHeader,CustomButton,CustomInputText,CustomImage} from '../common';
 // import { ScrollView } from 'react-native-gesture-handler';
  import { Actions } from 'react-native-router-flux';
@@ -24,7 +24,8 @@ export default class Appointment extends React.Component {
             mobile:'',
             prefDoct:'',
             comment:'',
-            allDoctor:[]
+            allDoctor:[],
+            headerUsername:''
         }
     }
 
@@ -43,7 +44,7 @@ export default class Appointment extends React.Component {
     }
 
 
-    componentWillMount(){
+    async componentWillMount(){
         let ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/');
         let docRef = firebase.database().ref('users/');
         ref.on('value',(snapshot)=>{
@@ -71,7 +72,18 @@ export default class Appointment extends React.Component {
                 this.setState({allDoctor:doctors});
             }
         })
+
+        //search username
+        try {
+            const value = await AsyncStorage.getItem('username');
+            if (value !== null){
+            this.setState({headerUsername:value});
+            }
+          } catch (error) { console.log(error) }
+
+
     }
+    
 
     openAlert(msg){
         alert(msg);
@@ -89,19 +101,19 @@ export default class Appointment extends React.Component {
             ){
 
                 if(this.state.date =='' || this.state.date == undefined || this.state.date == null){
-                    this.openAlert("date");
+                    this.openAlert("Date field can not be blank");
                 }else if(this.state.time == '' || this.state.time == undefined || this.state.time == null){
-                    this.openAlert("time");
+                    this.openAlert("Time field can not be blank");
                 }else if(this.state.selectPet == ''|| this.state.selectPet == undefined || this.state.selectPet == null){
-                    this.openAlert("pet");
+                    this.openAlert("Pet field can not be blank");
                 }else if(this.state.diseases == '' || this.state.diseases == undefined || this.state.diseases == null){
-                    this.openAlert("diseases");
+                    this.openAlert("Diseases can not be blank");
                 }else if(this.state.username == '' || this.state.username == undefined || this.state.username == null){
-                    this.openAlert("username");
+                    this.openAlert("Username cannot be blank");
                 }else if(this.state.mobile =='' || this.state.mobile == undefined || this.state.mobile == null){
-                    this.openAlert("mobile");
+                    this.openAlert("Mobile cannot be blank");
                 }else if(this.state.prefDoct == '' || this.state.prefDoct == undefined || this.state.prefDoct == null){
-                    this.openAlert("doctor");
+                    this.openAlert("Doctor cannot be blank");
                 }
 
                 
@@ -124,7 +136,7 @@ export default class Appointment extends React.Component {
                     firebase.database().ref('users/' + this.state.prefDoct + '/myAppointment/' + success.key + '/' ).set(data);
                     firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/myAppointment/' + success.key + '/' ).set(data);
                     firebase.database().ref('myAppointment/' +  success.key +'/' ).set(data).then(()=>{Actions.pop()});
-                }).catch((error)=>{console.log(error)});
+                }).catch((error)=>{console.log(error); this.openAlert(error)});
             }
     }
 
@@ -133,7 +145,15 @@ export default class Appointment extends React.Component {
     return (
         <View>
             <View style={{top:30}}>
-                <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}} onPressBack={()=>{Actions.pop()}}/>
+                <CustomHeader  
+                Headershow={false} 
+                headerName="Dashboard" 
+                showDataWelcome={true} 
+                showLogoutButton={true} 
+                showBackbutton= {true} 
+                Textwelcome={this.state.headerUsername ? this.state.headerUsername :''} 
+                onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}}  
+                onPressBack={()=>{Actions.pop()}}/>
             </View>
             <View style={{top:32, height:50, width:width, borderWidth:0.5, borderColor:'#002984', borderTopColor:'#002984'}}>
                 <Text style={{alignSelf:'center',fontSize:20,padding:5, fontWeight:'bold', color:'#002984' }}>Book Appointment</Text>
@@ -162,10 +182,11 @@ export default class Appointment extends React.Component {
                             date={this.state.time}
                             mode="time"
                             placeholder="Select Time"
-                            format="HH-MM"
+                            format="HH-MM :AM/PM"
                             //  minDate={new Date()}
                             //maxDate="2016-06-01"
-                            is24Hour={false}
+                            //is24Hour={false}
+                            is24Hour={true}
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             customStyles={{
@@ -206,7 +227,7 @@ export default class Appointment extends React.Component {
                         onChangeText={text=>this.setState({mobile:text})}
                     />
                 
-                    <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}>
+                    <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff', margin:3 }}>
                         <Picker
                             style={{width:200, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
                             selectedValue={this.state.prefDoct}
@@ -226,7 +247,7 @@ export default class Appointment extends React.Component {
                         value={this.state.comment}
                         onChangeText={text=>this.setState({comment:text})}
                     />
-                    <View style={{marginTop:20, alignItems:'center'}}>
+                    <View style={{marginTop:10, alignItems:'center'}}>
                         <CustomButton onPress={()=>{this.SubmitPet()}}>Submit</CustomButton>
                     </View>
                 </View> 

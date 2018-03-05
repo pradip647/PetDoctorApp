@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View,ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View,ActivityIndicator,AsyncStorage } from 'react-native';
 import {Router, Route, Schema, Animations, TabBar,Stack,Scene, Actions,Lightbox} from 'react-native-router-flux'
 //Custom component
 import {CustomHeader} from './src/components/common';
@@ -40,6 +40,24 @@ export default class App extends React.Component {
 
     firebase.auth().onAuthStateChanged((user)=>{
         if(user){
+          let userRef = firebase.database().ref('users/' + user.uid);
+          userRef.once('value',(snapshot)=>{
+            if(snapshot.val()){
+              if(snapshot.val().username){
+                let username = snapshot.val().username
+;                try {
+                  // AsyncStorage.setItem('username', value);
+                  AsyncStorage.setItem('username', username);
+                } catch (error) {
+                  // Error saving data
+                }
+
+              }
+            }
+          })
+
+
+          
           this.setState({ openLoading:false });
           Actions.reset('MainPage')
         }else{

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView } from 'react-native';
+import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView,AsyncStorage,ActivityIndicator } from 'react-native';
 import { CustomHeader,CustomButton,CustomInputText,CustomImage,CustomCardImg} from '../common';
 // import { ScrollView } from 'react-native-gesture-handler';
 //fab icon button
@@ -17,7 +17,9 @@ export default class Pets extends React.Component {
         super(props);
         this.state={
             allPets:[],
-            dataFound:true
+            dataFound:true,
+            headerUsername:'',
+            showloading:true
         }
         //console.log("dssdcs: " + firebase.auth().currentUser.uid);
         let ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/');
@@ -31,15 +33,35 @@ export default class Pets extends React.Component {
                         alldata.push(data[key]);
                     }
                     this.setState({
+                        showloading:false,
                         allPets:alldata,
                         dataFound:false
                     },()=>{console.log(this.state.allPets)})
-                } 
+                } else{
+                    this.setState({
+                        //allPets:[],
+                        showloading:false,
+                        dataFound:true
+                    },()=>{console.log(this.state.allPets)})
+                }
             },1000)
             
         })
 
     }
+
+    async componentWillMount(){
+        try {
+            const value = await AsyncStorage.getItem('username');
+            if (value !== null){
+                console.log("username : " + value);
+            this.setState({headerUsername:value});
+            }
+          } catch (error) { console.log(error) }
+
+    }
+
+    
 
    
 
@@ -54,20 +76,33 @@ export default class Pets extends React.Component {
 
   render() {
     return (
-        // <View>
-
-
-        
         <View > 
-        
             <View style={{top:30}}>
-            <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}} onPressBack={()=>{Actions.pop()}}/>
+            <CustomHeader  
+                Headershow={false} 
+                headerName="Dashboard" 
+                showDataWelcome={true} 
+                showLogoutButton={true} 
+                showBackbutton= {true} 
+                Textwelcome={this.state.headerUsername ? this.state.headerUsername : ''} 
+                onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}}  
+                onPressBack={()=>{Actions.pop()}}
+            />
             </View>
-            { this.state.dataFound ? 
-                <View style={{marginTop:40, alignSelf:'center'}}><Text style={{fontWeight:'bold', fontSize:20}}>Loading....</Text></View>
-                :null
+            {   //for loading and no data found 
+                this.state.showloading ? 
+                    <View style={[styles.container, styles.horizontal]}>
+                        <ActivityIndicator size="large" color="#0000ff" />
+                    </View>         
+                :   
+                    <View>
+                        { this.state.dataFound ? 
+                            <View style={{top:height/3, alignSelf:'center'}}><Text style={{fontWeight:'bold', fontSize:20}}>No Data found...</Text></View>
+                            :null
+                        }
+                    </View>
+                //for loading and no data found  End.....
             }
-
             <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31, alignSelf:'center'}}>
                 {this.state.allPets ? 
                     this.state.allPets.map((item, index)=>{
@@ -88,7 +123,7 @@ export default class Pets extends React.Component {
                                 </View>
                             </TouchableOpacity>
                         )
-                    }) :null
+                    }) : null
                 }    
             </ScrollView> 
             <ActionButton
@@ -103,5 +138,17 @@ export default class Pets extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
+    //for loading
+    container: {
+        top:height/5,
+        flex: 1,
+        justifyContent: 'center',
+       // alignSelf:'center'
+      },
+      horizontal: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10
+      }
+      //loading end
 });

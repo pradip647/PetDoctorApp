@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView } from 'react-native';
+import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView,AsyncStorage } from 'react-native';
 import { CustomHeader,CustomButton,CustomInputText,CustomImage,CustomCardImg} from '../common';
 //fab icon button
 import ActionButton from 'react-native-action-button';
@@ -18,8 +18,23 @@ export default class PetDetails extends React.Component {
         this.state={
             notFound:true,
             petData:{},
-            petId:''
+            petId:'',
+            headerUsername:''
         } 
+    }
+
+    async componentWillMount(){
+        try {
+            const value = await AsyncStorage.getItem('username');
+            if (value !== null){
+              // We have data!!
+              console.log("asasxsa : " + value);
+            this.setState({headerUsername:value});
+            }
+          } catch (error) {
+            console.log(error)
+          }
+
     }
     
     componentDidMount(){
@@ -29,6 +44,17 @@ export default class PetDetails extends React.Component {
                 petId:this.props.data.petId
             })
         }
+
+        // try {
+            // const value = await AsyncStorage.getItem('username');
+            // // if (value !== null){
+            //   // We have data!!
+            //   console.log(value);
+            // this.setState({headerUsername:value});
+            // }
+        // //   } catch (error) {
+        //     console.log(error)
+        //   }
     }
 
     pastConHistory(id){
@@ -39,7 +65,15 @@ export default class PetDetails extends React.Component {
     return (
         <View>
             <View style={{top:30}}>
-                <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}} onPressBack={()=>{Actions.pop()}}/>
+                <CustomHeader  
+                Headershow={false} 
+                headerName="Dashboard" 
+                showDataWelcome={true} 
+                showLogoutButton={true} 
+                showBackbutton= {true} 
+                Textwelcome={this.state.headerUsername ? this.state.headerUsername : ''} 
+                onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}}  
+                onPressBack={()=>{Actions.pop()}}/>
             </View>
             <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:60}}>
         

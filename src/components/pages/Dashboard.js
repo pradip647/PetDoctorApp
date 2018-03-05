@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView } from 'react-native';
+import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView ,AsyncStorage } from 'react-native';
 import { CustomHeader,CustomButton,CustomInputText,CustomImage} from '../common';
 import { Actions } from 'react-native-router-flux';
 import Home from './Home';
@@ -13,6 +13,7 @@ export default class MainPage extends React.Component {
     };
     constructor(props){
         super(props);
+        this.state={headerUsername:''}
         
     }
     async componentWillMount(){
@@ -21,7 +22,17 @@ export default class MainPage extends React.Component {
             let uid = await firebase.auth().currentUser.uid;
             if(uid)
             {
-              console.log("uid found" + uid);
+                // try {
+                    const value = await AsyncStorage.getItem('username');
+                    if (value !== null){
+                      // We have data!!
+                      console.log(value);
+                    this.setState({headerUsername:value});
+                    }
+                //   } catch (error) {
+                //     // Error retrieving data
+                //   }
+              //console.log("uid found" + uid);
             }
             else {
             console.log('Wait for it');
@@ -41,7 +52,16 @@ export default class MainPage extends React.Component {
     return (
         <View style={styles.mainView}>
             <View style={{top:30}}>
-            <CustomHeader  Headershow={false} headerName="Dashboard" showDataWelcome={true} showLogoutButton={true} showBackbutton= {false} Textwelcome="Pradip" onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}} onPressBack={()=>{Actions.pop()}}/>
+                <CustomHeader  
+                    Headershow={false} 
+                    headerName="Dashboard" 
+                    showDataWelcome={true} 
+                    showLogoutButton={true} 
+                    showBackbutton= {false} 
+                    Textwelcome={this.state.headerUsername ? this.state.headerUsername : ''} 
+                    onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}} 
+                    onPressBack={()=>{Actions.pop()}}
+                />
             </View>
             <View style={{top:30,}}>
                 <View>
