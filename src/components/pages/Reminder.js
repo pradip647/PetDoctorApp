@@ -27,8 +27,6 @@ export default class Reminder extends React.Component {
     constructor(props){
         super(props);
         this.state={pastData:[],datanotfound:false,openLoading:true}
-
-       //let ref = firebase.database().ref('users/')
     }
     componentDidMount(){
             let ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/myAppointment/')
@@ -71,12 +69,6 @@ export default class Reminder extends React.Component {
     }
 
     render() {
-        // if (this.state.openLoading){
-        //     return (<View style={[styles.container, styles.horizontal]}>
-        //           <ActivityIndicator size="large" color="#0000ff" />
-        //     </View>
-        //     )
-        //   }
         return (
             <View>
                 <View style={{top:30}}>

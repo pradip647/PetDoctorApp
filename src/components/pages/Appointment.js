@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView,Picker,AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView,Picker,AsyncStorage,ActivityIndicator } from 'react-native';
 import { CustomHeader,CustomButton,CustomInputText,CustomImage} from '../common';
 // import { ScrollView } from 'react-native-gesture-handler';
  import { Actions } from 'react-native-router-flux';
@@ -25,7 +25,8 @@ export default class Appointment extends React.Component {
             prefDoct:'',
             comment:'',
             allDoctor:[],
-            headerUsername:''
+            headerUsername:'',
+            showloading:false
         }
     }
 
@@ -91,6 +92,7 @@ export default class Appointment extends React.Component {
 
     //submit pet Appointment
     SubmitPet(){
+
         if(this.state.date =='' || this.state.date == undefined || this.state.date == null ||
             this.state.time == '' || this.state.time == undefined || this.state.time == null || 
             this.state.selectPet == ''|| this.state.selectPet == undefined || this.state.selectPet == null ||
@@ -118,6 +120,7 @@ export default class Appointment extends React.Component {
 
                 
             }else{
+                this.setState({showloading:true});
                 let data={
                     date:this.state.date,
                     time:this.state.time,
@@ -135,8 +138,16 @@ export default class Appointment extends React.Component {
                 firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/' + this.state.selectPet.petId + '/myAppointment/').push(data).then((success)=>{
                     firebase.database().ref('users/' + this.state.prefDoct + '/myAppointment/' + success.key + '/' ).set(data);
                     firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/myAppointment/' + success.key + '/' ).set(data);
-                    firebase.database().ref('myAppointment/' +  success.key +'/' ).set(data).then(()=>{Actions.pop()});
-                }).catch((error)=>{console.log(error); this.openAlert(error)});
+                    firebase.database().ref('myAppointment/' +  success.key +'/' ).set(data)
+                    .then(()=>{
+                        this.setState({showloading:false});
+                        Actions.pop();
+                    });
+                }).catch((error)=>{
+                    this.setState({showloading:false});
+                    console.log(error); 
+                    this.openAlert(error)
+                });
             }
     }
 
@@ -250,6 +261,19 @@ export default class Appointment extends React.Component {
                     <View style={{marginTop:10, alignItems:'center'}}>
                         <CustomButton onPress={()=>{this.SubmitPet()}}>Submit</CustomButton>
                     </View>
+
+                    <View style={{position:"absolute", flex:1, flexDirection:'column', alignSelf:'center'}}>
+                        {   //for loading and no data found 
+                            this.state.showloading ? 
+                                <View style={[styles.container, styles.horizontal]}>
+                                    <ActivityIndicator size="large" color="#0000ff" />
+                                </View>         
+                            : null
+                            //for loading and no data found  End.....
+                        }
+                    </View>
+
+
                 </View> 
             </ScrollView> 
         </View>
@@ -258,5 +282,17 @@ export default class Appointment extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
+   //for loading
+   container: {
+    top:height/4,
+    flex: 1,
+    justifyContent: 'center',
+   // alignSelf:'center'
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
+  },
+  //loading end
 });

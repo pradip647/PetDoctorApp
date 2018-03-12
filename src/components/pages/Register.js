@@ -91,85 +91,66 @@ export default class Register extends React.Component {
 
   render() {
     return (
-        // <View>
-
-        
         <View>
             <View style={{top:30}}>
-        <CustomHeader  Headershow={true} headerName="Registration" showDataWelcome={false} showLogoutButton={false} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
-        </View>
-        <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>
-          
-            {/* <View style={{height:Dimensions.get('window').height}}> */}
-                {/* <View style={{marginTop:100}}> */}
-                    <CustomImage
-                        imageViewStyle={{alignSelf:'center'}}
-                        imageTagStyle={{height:120, width:(width-100)}}
-                        //imageURL={{uri:'http://www.imag.co.uk/images/gravel/raisby-golden-gravel-lg-1.jpg'}}
-                        imageURL={require('../../assets/images/logo.png')}
+                <CustomHeader  Headershow={true} headerName="Registration" showDataWelcome={false} showLogoutButton={false} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
+            </View>
+            <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>
+                <CustomImage
+                    imageViewStyle={{alignSelf:'center'}}
+                    imageTagStyle={{height:120, width:(width-100)}}
+                    //imageURL={{uri:'http://www.imag.co.uk/images/gravel/raisby-golden-gravel-lg-1.jpg'}}
+                    imageURL={require('../../assets/images/logo.png')}
+                />
+                <View style={{marginTop:30}}>
+                    <CustomInputText
+                        placeholder=" Please Enter Name"
+                        value={this.state.name}
+                        onChangeText={text=>this.setState({name:text})}
+                    />
+                    <CustomInputText
+                        placeholder=" Please Enter Username"
+                        value={this.state.username}
+                        onChangeText={text=>this.setState({username:text})}
+                    />
+                    <CustomInputText
+                        placeholder=" Please Enter Address"
+                        value={this.state.address}
+                        onChangeText={text=>this.setState({address:text})}
+                    />
+                    <CustomInputText
+                        placeholder=" Please Enter Email"
+                        value={this.state.email}
+                        onChangeText={text=>this.setState({email:text})}
+                    />
+                    <CustomInputText
+                        placeholder=" Please Enter IC Number"
+                        value={this.state.ic}
+                        onChangeText={text=>this.setState({ic:text})}
+                    />
+                    <CustomInputText
+                        placeholder=" Please Enter HP Number"
+                        value={this.state.hp}
+                        onChangeText={text=>this.setState({hp:text})}
+                    />
+                    <CustomInputText
+                        placeholder=" Please Enter Password"
+                        value={this.state.password}
+                        onChangeText={text=>this.setState({password:text})}
                     />
 
-                    <View style={{marginTop:30}}>
-                        <CustomInputText
-                            placeholder=" Please Enter Name"
-                            value={this.state.name}
-                            onChangeText={text=>this.setState({name:text})}
-                        />
-                        <CustomInputText
-                            placeholder=" Please Enter Username"
-                            value={this.state.username}
-                            onChangeText={text=>this.setState({username:text})}
-                        />
-                        <CustomInputText
-                            placeholder=" Please Enter Address"
-                            value={this.state.address}
-                            onChangeText={text=>this.setState({address:text})}
-                        />
-                        <CustomInputText
-                            placeholder=" Please Enter Email"
-                            value={this.state.email}
-                            onChangeText={text=>this.setState({email:text})}
-                        />
-                        <CustomInputText
-                            placeholder=" Please Enter IC Number"
-                            value={this.state.ic}
-                            onChangeText={text=>this.setState({ic:text})}
-                        />
-                        <CustomInputText
-                            placeholder=" Please Enter HP Number"
-                            value={this.state.hp}
-                            onChangeText={text=>this.setState({hp:text})}
-                        />
-                        <CustomInputText
-                            placeholder=" Please Enter Password"
-                            value={this.state.password}
-                            onChangeText={text=>this.setState({password:text})}
-                        />
+                    <View style={{marginTop:20, alignItems:'center'}}>
+                        <CustomButton onPress={()=>{this.SignUpBtn()}}>Sign Up</CustomButton>
 
-                        <View style={{marginTop:20, alignItems:'center'}}>
-                            <CustomButton onPress={()=>{this.SignUpBtn()}}>Sign Up</CustomButton>
-
-                            <View style={{height:60}}>
-                                <View >
-                                    <Text onPress={()=>{Actions.pop()}}>Back to Sign in</Text>
-                                </View>
+                        <View style={{height:60}}>
+                            <View >
+                                <Text onPress={()=>{Actions.pop()}}>Back to Sign in</Text>
                             </View>
-                            
                         </View>
                     </View>
-                {/* </View> */}
-            {/* </View> */}
-            
-            
-
-            
-                    
+                </View>
             </ScrollView> 
          </View>
-
-
-
-    
     );
   }
 }

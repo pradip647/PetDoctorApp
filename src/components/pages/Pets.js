@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView,AsyncStorage,ActivityIndicator } from 'react-native';
 import { CustomHeader,CustomButton,CustomInputText,CustomImage,CustomCardImg} from '../common';
-// import { ScrollView } from 'react-native-gesture-handler';
 //fab icon button
 import ActionButton from 'react-native-action-button';
- import { Actions } from 'react-native-router-flux';
- import * as firebase from 'firebase';
+import { Actions } from 'react-native-router-flux';
+import * as firebase from 'firebase';
+
 
 var {height, width} = Dimensions.get('window');
 export default class Pets extends React.Component {
@@ -21,7 +21,7 @@ export default class Pets extends React.Component {
             headerUsername:'',
             showloading:true
         }
-        //console.log("dssdcs: " + firebase.auth().currentUser.uid);
+
         let ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/mypets/');
         ref.on('value',(snapshot)=>{
             setTimeout(()=>{
@@ -39,17 +39,15 @@ export default class Pets extends React.Component {
                     },()=>{console.log(this.state.allPets)})
                 } else{
                     this.setState({
-                        //allPets:[],
                         showloading:false,
                         dataFound:true
                     },()=>{console.log(this.state.allPets)})
                 }
-            },1000)
-            
+            },1000) 
         })
-
     }
 
+    //componentWillMount lifecycle
     async componentWillMount(){
         try {
             const value = await AsyncStorage.getItem('username');
@@ -58,17 +56,14 @@ export default class Pets extends React.Component {
             this.setState({headerUsername:value});
             }
           } catch (error) { console.log(error) }
-
     }
 
-    
-
-   
-
+    //open alert
     openAlert(msg){
         alert(msg);
     }
 
+    //go to patientlist function
     gotoPetDetails(data){
         Actions.PetDetails({data:data})
     }
@@ -107,12 +102,14 @@ export default class Pets extends React.Component {
                 {this.state.allPets ? 
                     this.state.allPets.map((item, index)=>{
                         return ( 
-                            <TouchableOpacity onPress={()=>{this.gotoPetDetails(item)}} style={{margin:5, width:width-20, height:70, borderColor:'#6f74dd',borderWidth:1 }} key={item.petId}>
+                            <TouchableOpacity onPress={()=>{this.gotoPetDetails(item)}} style={{margin:5, width:width-20, height:70, borderColor:'#00227a',borderWidth:1 }} key={item.petId}>
                                 <View style={{flex:1, flexDirection:'row',justifyContent:'space-around'}}>
                                     <Image
-                                            style={{height:70, width:100}}
+                                            style={{height:68, width:100}}
                                             //styleName="small rounded-corners"
-                                            source={{ uri: 'https://shoutem.github.io/img/ui-toolkit/examples/image-10.png' }}
+                                            //source={{ uri: 'https://shoutem.github.io/img/ui-toolkit/examples/image-10.png' }}
+                                            source={{uri:item.image ? item.image : 'https://firebasestorage.googleapis.com/v0/b/doctorapp-539e5.appspot.com/o/No_image_3x4.svg.png?alt=media&token=a5a1f13b-694a-4a57-a1ad-4f62cbae58a9'}}
+                                            // source={require('../../assets/images/dogone.jpg')}
                                         />
                                     <View style={{ width:width-90}}>
                                         <View style={{flex:1, flexDirection:'column'}}>
@@ -121,6 +118,9 @@ export default class Pets extends React.Component {
                                         </View>
                                     </View>
                                 </View>
+                                {/* <View style={{position:'absolute', left:5,}}>
+                                    <Text>Delete</Text>
+                                </View> */}
                             </TouchableOpacity>
                         )
                     }) : null
@@ -132,7 +132,6 @@ export default class Pets extends React.Component {
                 onPress={() => { Actions.AdPet()}}
             />
         </View>
-
     );
   }
 }

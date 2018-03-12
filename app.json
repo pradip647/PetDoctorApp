@@ -1,5 +1,13 @@
 {
   "expo": {
+    "name":"doctorapp",
+    "version": "0.0.1",
     "sdkVersion": "25.0.0"
+  },
+  "ios": {
+    "bundleIdentifier": "com.exicube.doctorapp"
+  },
+  "android": {
+    "package": "com.exicube.doctorapp"
   }
 }
