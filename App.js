@@ -18,6 +18,7 @@ import About from './src/components/pages/About';
 import Contact from './src/components/pages/Contact';
 
 import * as firebase from 'firebase';
+import Map from './src/components/pages/Map';
 
 export default class App extends React.Component {
   constructor(props){
@@ -93,6 +94,7 @@ export default class App extends React.Component {
                   <Scene key="Reminder" component={Reminder} />
                   <Scene key="About" component={About} />
                   <Scene key="Contact" component={Contact} />
+                  <Scene key="Map" component={Map} />
                 </Scene>
               </Router>
               )

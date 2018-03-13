@@ -166,7 +166,7 @@ export default class Appointment extends React.Component {
                 onPressLogout={()=>{firebase.auth().signOut().then(()=>{Actions.reset('Home')})}}  
                 onPressBack={()=>{Actions.pop()}}/>
             </View>
-            <View style={{top:32, height:50, width:width, borderWidth:0.5, borderColor:'#002984', borderTopColor:'#002984'}}>
+            <View style={{top:32, height:45, width:width, borderWidth:0.5, borderColor:'#002984', borderTopColor:'#002984'}}>
                 <Text style={{alignSelf:'center',fontSize:20,padding:5, fontWeight:'bold', color:'#002984' }}>Book Appointment</Text>
             </View>
             <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>

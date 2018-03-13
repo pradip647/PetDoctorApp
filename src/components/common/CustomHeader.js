@@ -99,7 +99,8 @@ const CustomHeader = ({
 };
 
 const styles = {
-    mainView:{height:60, backgroundColor:'#757de8'},
+    // mainView:{height:60, backgroundColor:'#757de8'},
+    mainView:{height:60, backgroundColor:'#29007d'},
     mainFlex: { flex: 1, flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', width: Dimensions.get('window').width },
     childFlex:{flex: 1, flexDirection: 'row', justifyContent: 'space-between'},
     backIconView:{marginTop:10,left:5, marginBottom:10},
