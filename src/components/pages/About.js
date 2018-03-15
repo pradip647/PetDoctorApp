@@ -18,17 +18,19 @@ export default class About extends React.Component {
   render() {
     return (
         <View>
-            <View style={{top:30}}>
+            <View style={{top:23}}>
                 <CustomHeader  Headershow={true} headerName="About Us" showDataWelcome={false} showLogoutButton={false} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
             </View>
-            <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>
+            <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:23}}>
+            <View style={{top: 5}}>
                     <CustomImage
+                        resizeMode={'contain'}
                         imageViewStyle={{alignSelf:'center'}}
-                        imageTagStyle={{height:120, width:(width-100)}}
-                        //imageURL={{uri:'http://www.imag.co.uk/images/gravel/raisby-golden-gravel-lg-1.jpg'}}
+                        imageTagStyle={{height:150, width:(width-100)}}
                         imageURL={require('../../assets/images/logo.png')}
                     />
-
+                    <Text style={{alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>BookYourVet</Text>
+                </View>
                     <View style={{marginTop:30, padding:10}}>
                         <Text> 
                             Our first veterinary clinic has grew by leaps & bounds since it’s opening in 1972 by our founder, Dr S. Sivagurunathan. He is a founding member of VET-ONE USA (1975) and the second Asian member to join Veterinary Emergency and Critical Care Society (VECCS) in 1978. He was a pioneer in emergency veterinary services in Malaysia. Dr Sivagurunathan was appointed an Associate Professor Madya at UPM in 1990 for his early work in animal welfare and lectured the undergraduates on welfare and ethics. He was a Past President of the Veterinary Association of Malaysia (VAM), Malaysian Small Animal Veterinary Association (MSAVA)-  formerly SAPAM and a senior past member of the Malaysian Veterinary Council (MVC). He is currently an active in a number of boards and foundations.

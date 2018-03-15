@@ -92,16 +92,20 @@ export default class Register extends React.Component {
   render() {
     return (
         <View>
-            <View style={{top:30}}>
+            <View style={{top:23}}>
                 <CustomHeader  Headershow={true} headerName="Registration" showDataWelcome={false} showLogoutButton={false} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
             </View>
-            <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>
+            <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:23}}>
+            <View style={{top: 10}}>
                 <CustomImage
+                    resizeMode={'contain'}
                     imageViewStyle={{alignSelf:'center'}}
                     imageTagStyle={{height:120, width:(width-100)}}
                     //imageURL={{uri:'http://www.imag.co.uk/images/gravel/raisby-golden-gravel-lg-1.jpg'}}
                     imageURL={require('../../assets/images/logo.png')}
                 />
+                <Text style={{alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>BookYourVet</Text>
+                </View>
                 <View style={{marginTop:30}}>
                     <CustomInputText
                         placeholder=" Please Enter Name"

@@ -50,7 +50,7 @@ export default class MainPage extends React.Component {
   render() {
     return (
         <View style={styles.mainView}>
-            <View style={{top:30}}>
+            <View style={{top:23}}>
                 <CustomHeader  
                     Headershow={false} 
                     headerName="Dashboard" 

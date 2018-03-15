@@ -2,9 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image } from 'react-native';
 import { CustomHeader,CustomButton,CustomInputText,CustomImage} from '../common';
 import { ScrollView } from 'react-native-gesture-handler';
- import { Actions} from 'react-native-router-flux';
- import * as firebase from 'firebase';
+import { Actions} from 'react-native-router-flux';
+import * as firebase from 'firebase';
 
+// "name":"doctorapp",
+// "icon": "./src/assets/images/logo.png",
 
 var {height, width} = Dimensions.get('window');
 export default class Home extends React.Component {
@@ -33,14 +35,16 @@ export default class Home extends React.Component {
         <View>
             <ScrollView style={ViewStyle}>
                 <View style={ViewStyle}>
-                    <View style={{marginTop:150}}>
+                    <View style={{marginTop:50}}>
                         <CustomImage
+                            resizeMode={'contain'}
                             imageViewStyle={{alignSelf:'center'}}
-                            imageTagStyle={{height:120, width:(width-100)}}
+                            imageTagStyle={{height:200, width:(width-100)}}
                             //imageURL={{uri:'http://www.imag.co.uk/images/gravel/raisby-golden-gravel-lg-1.jpg'}}
                             imageURL={require('../../assets/images/logo.png')}
                         />
-                        <View style={{marginTop:30}}>
+                        <Text style={{alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>BookYourVet</Text>
+                        <View style={{marginTop:40}}>
                             <CustomButton onPress={()=>{this.signInClick()}}>SIGN IN</CustomButton>
                             <CustomButton onPress={()=>{this.signUpClick()}}>SIGN UP</CustomButton>
                         </View>

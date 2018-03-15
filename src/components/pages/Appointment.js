@@ -155,7 +155,7 @@ export default class Appointment extends React.Component {
   render() {
     return (
         <View>
-            <View style={{top:30}}>
+            <View style={{top:23}}>
                 <CustomHeader  
                 Headershow={false} 
                 headerName="Dashboard" 
@@ -169,42 +169,43 @@ export default class Appointment extends React.Component {
             <View style={{top:32, height:45, width:width, borderWidth:0.5, borderColor:'#002984', borderTopColor:'#002984'}}>
                 <Text style={{alignSelf:'center',fontSize:20,padding:5, fontWeight:'bold', color:'#002984' }}>Book Appointment</Text>
             </View>
-            <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:31}}>
+            <ScrollView style={{height:Dimensions.get('window').height-120, marginTop:31}}>
             
                 <View style={{marginTop:30}}>
                     <DatePicker
-                            style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
-                            date={this.state.date}
-                            mode="date"
-                            placeholder="Select Date"
-                            format="YYYY-MM-DD"
-                            minDate={new Date()}
-                            //maxDate="2016-06-01"
-                            confirmBtnText="Confirm"
-                            cancelBtnText="Cancel"
-                            customStyles={{
-                            dateIcon: { position: 'absolute', left: 20, top: 4, marginLeft: 0 },
-                            dateInput: { borderColor:'#fff',borderWidth:0, }
-                            }}
-                            onDateChange={(date) => {this.setState({date: date})}}
+                        style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                        date={this.state.date}
+                        mode="date"
+                        placeholder="Select Date"
+                        format="YYYY-MM-DD"
+                        minDate={new Date()}
+                        //maxDate="2016-06-01"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        customStyles={{
+                        dateIcon: { position: 'absolute', left: 20, top: 4, marginLeft: 0 },
+                        dateInput: { borderColor:'#fff',borderWidth:0, }
+                        }}
+                        onDateChange={(date) => {this.setState({date: date})}}
                     />
                     <DatePicker
-                            style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
-                            date={this.state.time}
-                            mode="time"
-                            placeholder="Select Time"
-                            format="HH-MM :AM/PM"
-                            //  minDate={new Date()}
-                            //maxDate="2016-06-01"
-                            //is24Hour={false}
-                            is24Hour={true}
-                            confirmBtnText="Confirm"
-                            cancelBtnText="Cancel"
-                            customStyles={{
-                            dateIcon: { position: 'absolute', left: 20, top: 4, marginLeft: 0 },
-                            dateInput: { borderColor:'#fff',borderWidth:0, }
-                            }}
-                            onDateChange={(time) => {console.log(time);this.setState({time: time})}}
+                        style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                        date={this.state.time}
+                        mode="time"
+                        placeholder="Select Time"
+                        format="HH : MM"
+                        //minDate={new Date()}
+                        //maxDate="2016-06-01"
+                        //is24Hour={false}
+                        iconSource={require('/Users/pradip/Projects/DoctorApp/src/assets/images/AlarmSaveTime.png')}
+                        is24Hour={true}
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        customStyles={{
+                        dateIcon: { position: 'absolute', left: 20, top: 4, marginLeft: 0 },
+                        dateInput: { borderColor:'#fff',borderWidth:0, }
+                        }}
+                        onDateChange={(time) => {console.log(time);this.setState({time: time})}}
                     />
                     <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff', margin:3 }}>
                         <Picker
@@ -235,6 +236,7 @@ export default class Appointment extends React.Component {
                     <CustomInputText
                         placeholder=" Please Enter Mobile Number"
                         value={this.state.mobile}
+                        keyboardType={'numeric'}
                         onChangeText={text=>this.setState({mobile:text})}
                     />
                 
@@ -271,6 +273,9 @@ export default class Appointment extends React.Component {
                             : null
                             //for loading and no data found  End.....
                         }
+                    </View>
+
+                    <View style={{marginTop:10, alignItems:'center', height:30}}>
                     </View>
 
 

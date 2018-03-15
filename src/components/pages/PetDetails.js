@@ -69,7 +69,7 @@ export default class PetDetails extends React.Component {
     render() {
         return (
             <View>
-                <View style={{top:30}}>
+                <View style={{top:23}}>
                     <CustomHeader  
                     Headershow={false} 
                     headerName="Dashboard" 

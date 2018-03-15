@@ -1,13 +1,14 @@
+
 {
   "expo": {
-    "name":"doctorapp",
-    "version": "0.0.1",
-    "sdkVersion": "25.0.0"
-  },
-  "ios": {
-    "bundleIdentifier": "com.exicube.doctorapp"
-  },
-  "android": {
-    "package": "com.exicube.doctorapp"
+    "name": "Book Your Vet",
+    "version": "1.0.0",
+    "sdkVersion": "25.0.0",
+    "ios": {
+      "bundleIdentifier": "com.exicube.bookyourvet"
+    },
+    "android": {
+      "package": "com.exicube.bookyourvet"
+    }
   }
 }

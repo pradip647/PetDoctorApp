@@ -10,15 +10,17 @@ import * as firebase from 'firebase';
 
 var {height, width} = Dimensions.get('window');
 export default class Login extends React.Component {
-    
+    // email:'p@gmail.com',
+    // password:'123456', 
+
     static navigationOptions = {
         header: null,
     };
     constructor(props){
         super(props);
         this.state={
-            email:'p@gmail.com',
-            password:'123456',
+            email:'',
+            password:'',
             modalVisible: false,
             resetemail:''
         }
@@ -103,13 +105,14 @@ export default class Login extends React.Component {
         <View>
             <ScrollView style={{height:Dimensions.get('window').height}}>
                 <View style={{height:Dimensions.get('window').height}}>
-                    <View style={{marginTop:100}}>
-                        <CustomImage
+                    <View style={{marginTop:50}}>
+                    <CustomImage
+                            resizeMode={'contain'}
                             imageViewStyle={{alignSelf:'center'}}
-                            imageTagStyle={{height:120, width:(width-100)}}
-                            //imageURL={{uri:'http://www.imag.co.uk/images/gravel/raisby-golden-gravel-lg-1.jpg'}}
+                            imageTagStyle={{height:200, width:(width-100)}}
                             imageURL={require('../../assets/images/logo.png')}
                         />
+                        <Text style={{alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>BookYourVet</Text>
                         <View style={{marginTop:30}}>
                             <CustomInputText
                                 placeholder=" Please Enter Email"
