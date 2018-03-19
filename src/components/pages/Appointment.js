@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView,Picker,AsyncStorage,ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,
+    Image,ScrollView,Picker,AsyncStorage,ActivityIndicator,Platform, PickerIOS } from 'react-native';
 import { CustomHeader,CustomButton,CustomInputText,CustomImage} from '../common';
 // import { ScrollView } from 'react-native-gesture-handler';
  import { Actions } from 'react-native-router-flux';
@@ -173,7 +174,7 @@ export default class Appointment extends React.Component {
             
                 <View style={{marginTop:30}}>
                     <DatePicker
-                        style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                        style={{width:width-40,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
                         date={this.state.date}
                         mode="date"
                         placeholder="Select Date"
@@ -189,7 +190,7 @@ export default class Appointment extends React.Component {
                         onDateChange={(date) => {this.setState({date: date})}}
                     />
                     <DatePicker
-                        style={{width:320,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                        style={{width:width-40,margin:3, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
                         date={this.state.time}
                         mode="time"
                         placeholder="Select Time"
@@ -207,21 +208,36 @@ export default class Appointment extends React.Component {
                         }}
                         onDateChange={(time) => {console.log(time);this.setState({time: time})}}
                     />
-                    <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff', margin:3 }}>
-                        <Picker
-                            style={{width:200, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
-                            selectedValue={this.state.selectPet}
-                            onValueChange={(itemValue, itemIndex) => {this.setState({selectPet: itemValue},()=>{console.log(this.state.selectPet)});}}>
-                            <Picker.Item label='Select Your Pet' value={null} />
-                            {
-                                this.state.alldata? 
-                                this.state.alldata.map((item, index)=>{
-                                    return <Picker.Item label={item.name} value={item} />
-                                })
-                                :null
-                            }
-                        </Picker>
-                    </View>
+                    {Platform.OS != 'ios' ? 
+                        <View style={{width:width-40, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff', margin:3 }}>
+                            <Picker
+                                style={{width:width-80, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff'}}
+                                selectedValue={this.state.selectPet}
+                                onValueChange={(itemValue, itemIndex) => {this.setState({selectPet: itemValue},()=>{console.log(this.state.selectPet)});}}>
+                                <Picker.Item label='Select Your Pet' value={null} />
+                                {
+                                    this.state.alldata? 
+                                    this.state.alldata.map((item, index)=>{
+                                        return <Picker.Item label={item.name} value={item} />
+                                    })
+                                    :null
+                                }
+                            </Picker>
+                        </View>
+                        :<Picker
+                        style={{width:width-80, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff'}}
+                        selectedValue={this.state.selectPet}
+                        onValueChange={(itemValue, itemIndex) => {this.setState({selectPet: itemValue},()=>{console.log(this.state.selectPet)});}}>
+                        <Picker.Item label='Select Your Pet' value={null} />
+                        {
+                            this.state.alldata? 
+                            this.state.alldata.map((item, index)=>{
+                                return <Picker.Item label={item.name} value={item} />
+                            })
+                            :null
+                        }
+                    </Picker>
+                    }
 
                     <CustomInputText
                         placeholder=" Please Enter diseases"
@@ -239,22 +255,24 @@ export default class Appointment extends React.Component {
                         keyboardType={'numeric'}
                         onChangeText={text=>this.setState({mobile:text})}
                     />
-                
-                    <View style={{width:320, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff', margin:3 }}>
-                        <Picker
-                            style={{width:200, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
-                            selectedValue={this.state.prefDoct}
-                            onValueChange={(itemValue, itemIndex) => this.setState({prefDoct: itemValue})}>
-                            <Picker.Item label='Preffered Doctor' value={null} />
-                            {
-                                this.state.allDoctor? 
-                                this.state.allDoctor.map((item, index)=>{
-                                    return <Picker.Item label={item.name} value={item.uid} />
-                                })
-                                :null
-                            }
-                        </Picker>
-                    </View>
+                        {Platform.OS != 'ios' ? 
+                            <View style={{width:width-40, height:45,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff', margin:3 }}>
+                                <Picker
+                                    style={{width:width-80, height:35,borderRadius:35, borderColor:'#3f51b5', borderWidth:1, alignSelf:'center', backgroundColor:'#fff' }}
+                                    selectedValue={this.state.prefDoct}
+                                    onValueChange={(itemValue, itemIndex) => this.setState({prefDoct: itemValue})}>
+                                    <Picker.Item label='Preffered Doctor' value={null} />
+                                    {
+                                        this.state.allDoctor? 
+                                        this.state.allDoctor.map((item, index)=>{
+                                            return <Picker.Item label={item.name} value={item.uid} />
+                                        })
+                                        :null
+                                    }
+                                </Picker>
+                            </View>
+                            :<Text>i am ios platform</Text>
+                        }
                     <CustomInputText
                         placeholder=" Additional Comments"
                         value={this.state.comment}
@@ -275,7 +293,7 @@ export default class Appointment extends React.Component {
                         }
                     </View>
 
-                    <View style={{marginTop:10, alignItems:'center', height:30}}>
+                    <View style={{marginTop:10, alignItems:'center', height:50}}>
                     </View>
 
 

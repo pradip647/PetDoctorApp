@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TextInput} from 'react-native';
+import {Text, View, TextInput,Dimensions} from 'react-native';
 
 const CustomInputText = ({value, onChangeText,placeholder,keyboardType})=> {
     const { containerStyle,textStyle } = styles;
@@ -26,8 +26,10 @@ const styles={
         borderColor: '#26418f',
         borderWidth: 1,
         borderRadius:35,
-        marginLeft:20,
-        marginRight:20
+        alignSelf:'center',
+       // marginLeft:20,
+       // marginRight:20
+       width:(Dimensions.get('window').width-40)
     },
     textStyle:{
         color:'#26418f',

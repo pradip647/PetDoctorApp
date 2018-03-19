@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView } from 'react-native';
+import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView,KeyboardAvoidingView } from 'react-native';
 import { CustomHeader,CustomButton,CustomInputText,CustomImage} from '../common';
 // import { ScrollView } from 'react-native-gesture-handler';
  import { Actions } from 'react-native-router-flux';
@@ -92,10 +92,13 @@ export default class Register extends React.Component {
   render() {
     return (
         <View>
+            
             <View style={{top:23}}>
                 <CustomHeader  Headershow={true} headerName="Registration" showDataWelcome={false} showLogoutButton={false} showBackbutton= {true} Textwelcome="Pradip" onPressLogout={()=>{alert("Logout Clicked")}} onPressBack={()=>{Actions.pop()}}/>
             </View>
-            <ScrollView style={{height:Dimensions.get('window').height-90, marginTop:23}}>
+            
+            <ScrollView style={{height:Dimensions.get('window').height-50, marginTop:23}}>
+            <KeyboardAvoidingView behavior="padding" style={styles.form}>
             <View style={{top: 10}}>
                 <CustomImage
                     resizeMode={'contain'}
@@ -153,12 +156,18 @@ export default class Register extends React.Component {
                         </View>
                     </View>
                 </View>
+                </KeyboardAvoidingView >
             </ScrollView> 
+            
+            
          </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-
+    form: {
+        flex: 1,
+        justifyContent: 'space-between',
+      }
 });

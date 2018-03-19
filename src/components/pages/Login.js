@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView, Modal,Button } from 'react-native';
+import { StyleSheet, Text, View,TextInput,Dimensions,TouchableOpacity ,Image,ScrollView, Modal,Button,KeyboardAvoidingView, Keyboard } from 'react-native';
 import { CustomHeader,CustomButton,CustomInputText,CustomImage} from '../common';
 // import { ScrollView } from 'react-native-gesture-handler';
 import { Actions } from 'react-native-router-flux';
+
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 // import Home from './Home';
 // import Dashboard from './Dashboard';
 import * as firebase from 'firebase';
@@ -102,8 +104,12 @@ export default class Login extends React.Component {
 
   render() {
     return (
-        <View>
+        <View style={{flex:1}}>
+            
+             {/* <KeyboardAwareScrollView> */}
             <ScrollView style={{height:Dimensions.get('window').height}}>
+            <KeyboardAvoidingView behavior="padding" style={styles.form}>
+           
                 <View style={{height:Dimensions.get('window').height}}>
                     <View style={{marginTop:50}}>
                     <CustomImage
@@ -138,8 +144,9 @@ export default class Login extends React.Component {
                         </View>
                     </View>
                 </View>     
+                </KeyboardAvoidingView>
             </ScrollView> 
-
+            {/* </KeyboardAwareScrollView> */}
             <View style={styles.container}>
                 <Modal
                     visible={this.state.modalVisible}
@@ -200,7 +207,9 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderRadius:20,
         borderColor:'#3f51b5'
-
-        
       },
+      form: {
+        flex: 1,
+        justifyContent: 'space-between',
+      }
 });
